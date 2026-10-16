@@ -4,7 +4,7 @@
 
 Keep all eleven folders under `skills/` as siblings. Each ClickUp stage uses the orchestrator's shared policy. Handoff uses the supplementary planning skills and bundled templates. No symlinks, package manager, provider SDK, external planning plugin or secret configuration ships in the kit.
 
-The installation and validation scripts need Python 3.10 or later. Skill text can be read without Python. A runtime must support loading skills and resolving their relative files. Only the installed Codex version has a local discovery check for this draft.
+The standard skills CLI needs Node.js 22.20+ and npx for the tested CLI 1.7.2. Python 3.10+ is required only for fallback installation and maintainer checks. Skill text can be read without Python. A runtime must support loading skills and resolving their relative files. Only the installed Codex version has a local discovery check for this draft.
 
 ## Live source collection
 

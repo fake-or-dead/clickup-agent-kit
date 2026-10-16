@@ -6,33 +6,30 @@
 
 Original ClickUp core และ contributions ใช้ [MIT](LICENSE) ตาม [ขอบเขตสิทธิ์](docs/license-scope.md) Core ได้รับอนุญาตให้เผยแพร่ภายใต้ MIT ชุด public นี้ไม่รวม `karpathy-guidelines` เพราะ upstream notice ยังไม่ครบ อ่าน [third-party notices](THIRD_PARTY_NOTICES.md) สำหรับสิทธิ์แต่ละส่วน
 
-## Quick start: ลองโดยไม่เชื่อม ClickUp
+## Quick start: ติดตั้งในโปรเจกต์
 
-ต้องมี Python 3.10+ สำหรับ installer/tests และ runtime ที่อ่าน Agent Skills ได้ เริ่มจาก root ของ kit:
+มี Node.js 22.20+ และ `npx` แล้วรันในโฟลเดอร์โปรเจกต์ที่ต้องการใช้:
 
 ```sh
-git clone https://github.com/fake-or-dead/clickup-agent-kit.git
-cd clickup-agent-kit
-python3 scripts/validate.py
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
-python3 scripts/install.py --runtime codex --destination ../local-skills
+npx skills add fake-or-dead/clickup-agent-kit --skill '*' --agent codex claude-code
 ```
 
-คำสั่งสุดท้ายเป็น preview ไม่สร้างไฟล์ เติม `--apply` เมื่อเลือก destination แล้ว ตัวอย่าง `../local-skills` เป็นพื้นที่ตรวจไฟล์ ไม่ใช่ตำแหน่งที่ runtime ทุกตัวค้นหาอัตโนมัติ Installer ปฏิเสธชื่อที่ชนทั้งหมดก่อน copy และไม่แก้ authentication, MCP หรือ installed skills เดิม
+เลือก **Project** และ **Symlink** หาก CLI ถาม แล้วตรวจ summary ก่อน confirm คำสั่งนี้ติดตั้งครบ 11 skills ให้ทั้ง Codex และ Claude Code โดยอัตโนมัติ ใช้ `--skill '*'` เพื่อให้ relative links ระหว่าง skills ครบ
 
-อ่าน [fictional task](examples/fictional-task.json) กับ [source receipt](examples/source-receipt.md) แล้วใช้ prompt ตาม runtime ที่ติดตั้ง:
+ถ้าใช้ agent เดียวหรืออยากติดตั้ง global ดู [installation options](docs/installation.md) Python ใช้เฉพาะ fallback/maintainer checks ไม่ใช่ prerequisite ของวิธีหลัก
+
+### ลองโดยไม่เชื่อม ClickUp
+
+ใน Codex ใช้ `$techlead-analyse-clickup` หรือใน Claude Code ใช้ `/techlead-analyse-clickup` นำหน้า prompt นี้:
 
 ```text
-Codex: $techlead-analyse-clickup
-Claude Code: /techlead-analyse-clickup
-
-ทำงาน offline จาก examples/fictional-task.json และ examples/source-receipt.md เท่านั้น
-DEMO-001 เป็นข้อมูลสมมติ สร้าง rebrief ภาษาไทยและ developer card หนึ่งใบใน local
-directory ที่ตกลงกัน ห้ามเชื่อม ClickUp, browse, publish หรือ implement code
-ยังไม่มีข้อมูล hours per person-day, rate และ currency จึงไม่แปลง effort เป็นราคา
+ใช้ข้อมูลสมมตินี้เท่านั้น: โต๊ะยืมบอร์ดเกมต้องการแสดงจำนวนที่ยืมได้
+เกมตัวอย่างมี owned copies 3 และ active loans 1 ส่วน lost-item rule ยังไม่ตกลง
+ช่วย rebrief ภาษาไทย แยก facts, assumptions และคำถามสำคัญ สรุปในแชต
+ไม่เชื่อม ClickUp ไม่ browse ไม่เขียนไฟล์หรือเปลี่ยนระบบภายนอก
 ```
 
-เทียบกับ [expected rebrief](examples/expected-rebrief.md) และ [expected card](examples/expected-card.md) ซึ่งเป็นตัวอย่างที่เตรียมไว้ ไม่ใช่ผล model evaluation ข้อความเปลี่ยนได้ แต่ facts, unknowns และขอบเขตการทำงานต้องตรงกัน
+ถ้าจะใช้ข้อมูลจริง ต้อง [เชื่อม ClickUp และ authenticate แยก](docs/claude-code.md) การติดตั้ง skills ไม่ได้ตั้งค่า connector หรือให้สิทธิ์ workspace และไม่อนุญาตให้แก้ task อัตโนมัติ ตัวอย่าง fixture แบบเต็มอยู่ใน [offline example](examples/getting-started.md)
 
 ## Skill catalog: เลือกใช้เมื่อไร
 
@@ -59,7 +56,7 @@ directory ที่ตกลงกัน ห้ามเชื่อม ClickUp,
 | [domain-modeling](skills/domain-modeling/SKILL.md): ทำคำและ business rules ให้ชัด | source wording, glossary เดิม, concrete scenarios | terms, entities, invariants, conflicts และ unresolved decisions | คำเดียวมีหลายความหมาย เช่น available, returned หรือ lost |
 | [codebase-design](skills/codebase-design/SKILL.md): ออกแบบ interface และ ownership | code/contracts ที่เข้าถึงได้ตาม scope, required behavior | module/interface responsibilities, failure cases และ verification points | feasibility/handoff ต้องตัดสิน seam หรือ interface; ไม่ implement code อัตโนมัติ |
 
-`to-prd` และ `to-issues` รักษา explicit invocation policy ของต้นทางไว้ Core ใช้ template/method ที่เกี่ยวข้องได้โดยไม่เรียก full workflow อัตโนมัติ Codex ใช้ `agents/openai.yaml`; Claude installer แปลงเป็น `disable-model-invocation: true` เฉพาะสำเนาที่ติดตั้ง
+`to-prd` และ `to-issues` รักษา explicit invocation policy ของต้นทางไว้ Core ใช้ template/method ที่เกี่ยวข้องได้โดยไม่เรียก full workflow อัตโนมัติ Codex ใช้ `agents/openai.yaml`; Claude ใช้ `disable-model-invocation: true` ที่อยู่ใน `SKILL.md` โดยตรง ทั้งสอง policies ติดตั้งผ่าน CLI มาตรฐานได้
 
 ## Workflow: orchestrator และ supplements ทำงานร่วมกันอย่างไร
 
@@ -110,20 +107,9 @@ flowchart LR
 
 ## Installation และ prerequisites
 
-| Runtime | ตำแหน่ง / วิธีใช้ | หลักฐานปัจจุบัน |
-| --- | --- | --- |
-| Codex | explicit skill directory; isolated test ใช้ `CODEX_HOME/skills`; invoke ด้วย `$skill-name` | ตรวจ discovery ของ public package ครบ 11 skills บน Codex CLI 0.163.0; ไม่มี live ClickUp test |
-| Claude Code | project `.claude/skills` หรือ personal `~/.claude/skills`; invoke ด้วย `/skill-name` | มี installer/file-layout tests และ official-documentation basis; runtime loading/live integration ยังไม่ผ่านการทดสอบ |
+วิธีหลักคือ [skills CLI คำสั่งเดียวข้างต้น](docs/installation.md) ติดตั้ง skill folders ลงตำแหน่งมาตรฐานของ runtime รองรับเลือก agent, project/global scope และ copy mode มี Python installer เป็น fallback สำหรับ preview และปฏิเสธชื่อที่ชน
 
-ดู [Claude Code project/personal installation](docs/claude-code.md) สำหรับคำสั่ง preview/apply, metadata adaptation, verification และ ClickUp connector setup ที่ผู้ใช้เลือกทำเอง เก็บ skill folders ทั้งชุดเป็น siblings เพราะมี relative links
-
-สำหรับ Codex ตัวอย่างนี้แสดง preview เท่านั้น:
-
-```sh
-python3 scripts/install.py --runtime codex --destination "${CODEX_HOME:-$HOME/.codex}/skills"
-```
-
-Installer ไม่ติดตั้ง Python/runtime, ไม่เชื่อมบัญชี และไม่ตั้งค่า tool permissions Live collection ต้องมี connector ที่อ่าน task/comments และแหล่งข้อมูลที่เกี่ยวข้องได้ Live publication ต้องมี supported write และ read-back capability ดู [dependencies](docs/dependencies.md)
+ClickUp connector เป็นอีกขั้นที่จำเป็นสำหรับ live work ต้อง authenticate และมี read access ตาม scope หากจะ publish ต้องมี supported write/read-back capability และ explicit authorization ดู [dependencies](docs/dependencies.md), [Claude connector setup](docs/claude-code.md) และ [runtime evidence](docs/runtime-support.md)
 
 ## Safety และจุดที่ต้องได้รับคำตัดสินหรือ authorization
 

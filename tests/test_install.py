@@ -119,9 +119,8 @@ class InstallTests(unittest.TestCase):
             source_text = (source / "SKILL.md").read_text()
             installed_text = (target / "SKILL.md").read_text()
             if name in ["to-prd", "to-issues"]:
-                self.assertEqual(installed_text.replace("\ndisable-model-invocation: true", "", 1), source_text)
-            else:
-                self.assertEqual(installed_text, source_text)
+                self.assertEqual(installed_text.split("---", 2)[1].count("disable-model-invocation: true"), 1)
+            self.assertEqual(installed_text, source_text)
             for p in source.rglob("*"):
                 if p.is_file() and p.name != "SKILL.md":
                     self.assertEqual((target / p.relative_to(source)).read_bytes(), p.read_bytes())

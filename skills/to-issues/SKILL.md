@@ -1,6 +1,7 @@
 ---
 name: to-issues
 description: Turn a scoped plan into dependency-aware local issue drafts for ClickUp handoff.
+disable-model-invocation: true
 ---
 
 # Draft local issues

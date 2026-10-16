@@ -2,6 +2,8 @@
 
 This example concerns a fictional volunteer lending desk. It contains no live ClickUp URLs, user IDs, workspace IDs or customer data. `DEMO-001` is a fixture identifier, not a valid ClickUp task. All people are role labels.
 
+The standard CLI installs skill folders, not these repository-level fixtures. For this file-based exercise, clone the repository and work from its root, or use the inline offline prompt in the README without cloning.
+
 1. Read [the fictional task](fictional-task.json) and [source receipt](source-receipt.md).
 2. In a runtime that has loaded the kit, use the following prompt. Choose a local output directory you can write to.
 

@@ -1,6 +1,7 @@
 ---
 name: to-prd
 description: Synthesize a local PRD draft from collected evidence and the current conversation for ClickUp planning.
+disable-model-invocation: true
 ---
 
 # Draft a local PRD

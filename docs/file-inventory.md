@@ -1,6 +1,6 @@
 # Public package file inventory
 
-The public package includes 11 skills. Unresolved local material and adjacent review evidence are excluded.
+The package includes 11 skills. Unresolved local material and adjacent review evidence are excluded.
 
 | File |
 | --- |
@@ -11,6 +11,7 @@ The public package includes 11 skills. Unresolved local material and adjacent re
 | [docs/claude-code.md](../docs/claude-code.md) |
 | [docs/dependencies.md](../docs/dependencies.md) |
 | [docs/file-inventory.md](../docs/file-inventory.md) |
+| [docs/installation.md](../docs/installation.md) |
 | [docs/license-scope.md](../docs/license-scope.md) |
 | [docs/provenance.md](../docs/provenance.md) |
 | [docs/publication-review.md](../docs/publication-review.md) |

@@ -1,26 +1,31 @@
-# Local validation results
+# Installation validation results
 
-The checks used local files and disposable temporary directories on this Mac. Nothing was installed over existing user skills. No ClickUp calls, model runs, remote repository writes, uploads or sharing changes were made. Public GitHub sources and the existing authenticated account/destination were inspected read-only.
+The installation update was tested in disposable project directories with npm cache/config isolated and skills CLI telemetry disabled. No existing user skills or authentication configuration was changed. The tests made no live ClickUp calls or model requests.
 
-## Observed checks
+## Standard CLI checks
 
-The initial public payload contains 63 UTF-8 text files and 11 skills. All 163 local file links resolve. The exact publication payload is scanned separately from adjacent review evidence, and no source Git history or Karpathy implementation is included.
+- Official skills CLI 1.7.2 was tested with Node.js 26.12.0. Its npm package requires Node.js 22.20 or later.
+- Remote discovery of `fake-or-dead/clickup-agent-kit` found all 11 skills and left the discovery project's contents unchanged.
+- The published baseline installed into both Codex and Claude Code project layouts using symlink and copy modes. All 39 supporting skill files matched the source bytes, and all 43 relative links within the installed skills resolved for each agent.
+- The candidate preserves the two explicit-only supplements through source Claude frontmatter and the existing Codex policy. Standard CLI installation of the local candidate passed both modes, with the same complete files, references/templates, license notices and links. No custom post-install transformation is needed.
+- Codex CLI 0.163.0 discovered all 11 candidate skills from the standard project `.agents/skills` installation with zero parsing errors. This used local app-server `skills/list` with an isolated configuration directory and no model run.
+- Global scope is documented from official CLI/runtime sources but was not installed into the real user home. The interactive documentation command uses the same source/skill/agent flags as the noninteractive tests, which added `--yes`.
 
-- All 11 included skills have matching folder/name metadata and nonempty descriptions. The installed Codex skill-authoring validator passed all 11 included skills using an existing Python 3.10.4 environment with PyYAML. No package installation was needed. The first attempt under Python 3.15 lacked PyYAML; the kit's own validator and scripts use only the standard library.
-- All local Markdown file links resolve within the kit. The validator rejects linked files and checks common personal-path, email, production ClickUp URL, credential and provider-token patterns. Exact file/link counts are printed by `scripts/validate.py` and recorded in the local review evidence.
-- Fourteen installer tests pass under Python 3.10.4 and 3.15.0. They cover a no-write preview, byte-identical Codex copies, repeat refusal, all-or-nothing collision preflight, dangling links, a linked destination/source, preservation of unrelated files, unsupported runtime refusal and cleanup after copy failure. Claude project/personal layout, explicit-only metadata adaptation, notice preservation, source immutability and collision refusal are exercised without launching a model or editing account configuration.
-- Codex CLI 0.163.0 discovered all 11 included skills from a fresh temporary `CODEX_HOME/skills` location with zero parsing errors. The check used local app-server initialization and `skills/list`, without a conversation/model run or live account configuration. Temporary runtime data was removed.
-- SHA-256 checks confirm that all 19 core source files and matching installed copies are unchanged from the initial snapshot. No source history was copied.
-- Before/after snapshots, historical evaluation fixtures, transcripts and previous packaging artifacts were checked for publication risks. Personal paths, real task links and identifier-like strings occur in historical material. It is excluded from the draft. Credential-like pattern hits were not printed or treated as proof of a live credential.
-- The offline task and output examples contain fictional role labels and identifiers. They illustrate evidence status, scoped unknowns and the local-write boundary. They are hand-prepared examples rather than a model evaluation.
+## Package and fallback checks
 
-## Remaining limitations
+The package validator checks all local file links, naming/frontmatter, both explicit-only policies, symlinks and common publication-risk patterns. Exact current counts are printed by `scripts/validate.py`. Full YAML parsing separately confirms names/descriptions and boolean policy values for all 11 skills.
 
-An earlier Claude Code version command timed out. A later isolated attempt failed during CLI startup. The installer now supports the documented Claude layout and translates the two explicit-invocation policies, but Claude runtime loading, invocation and live integration remain unverified. Live ClickUp collection/publication and provider-specific workflows were not exercised. Runtime discovery does not prove behavioral quality.
+Fourteen fallback-installer tests cover no-write preview, byte preservation, collision/symlink refusal, preservation of unrelated files, copy-failure cleanup, both Claude layouts and non-duplicated explicit-only metadata. They pass on Python 3.10.4 and 3.15.0. Python is needed only for these checks or fallback installation, not the primary CLI route.
 
-No dedicated secret-scanner executable was available. Pattern scans do not establish the absence of every secret or customer reference. Original contributions now have an authorized MIT grant attributed to the configured Git author. All four Matt Pocock supplements have exact normalized historical matches and verified same-commit MIT notices. The Karpathy-inspired source declares MIT but lacks a full copyright/permission notice in the inspected tree. The user resolved the core-rights question and authorized public MIT publication; inspect actual files before publishing. This report covers the 11-skill public package. The unresolved Karpathy adaptation is not included.
+The older Codex-only scaffold validator rejects the Claude-specific `disable-model-invocation` key on two skills. Its fixed key allowlist is not a cross-runtime parser. Those files are instead checked with full YAML parsing, the kit's policy validator and actual Codex discovery, which accepts them without parse errors. No installed validator or skill was modified.
 
-## Repeat the packaged checks
+## Limits and preservation
+
+Claude runtime loading, model behavior and live ClickUp integration remain unverified because the installed Claude CLI failed startup during the earlier isolated check. File installation and metadata preservation are separate evidence from runtime execution. No scheduler or background monitoring is bundled.
+
+MIT terms and upstream notices remain intact. The unresolved Karpathy implementation remains excluded. Original source/installed skill preservation checks and the earlier publication scan are kept in separate local review evidence. No source Git history or private/customer examples are introduced by this update. Pattern scans cannot guarantee discovery of every secret or customer reference.
+
+## Repeat packaged checks
 
 ```sh
 python3 scripts/validate.py

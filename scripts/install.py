@@ -58,7 +58,8 @@ def install(destination, apply=False, runtime="codex"):
                 match = re.match(r"\A---\n(.*?)\n---\n", text, re.S)
                 if not match:
                     raise ValueError("Cannot adapt missing skill frontmatter")
-                skill.write_text(text[:match.end(1)] + "\ndisable-model-invocation: true" + text[match.end(1):])
+                if not re.search(r"^disable-model-invocation:\s*true$", match[1], re.M):
+                    skill.write_text(text[:match.end(1)] + "\ndisable-model-invocation: true" + text[match.end(1):])
     except (OSError, ValueError):
         for target in reversed(reserved):
             shutil.rmtree(target)

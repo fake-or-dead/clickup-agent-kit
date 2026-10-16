@@ -46,6 +46,12 @@ def validate(root=KIT):
             fields = dict(re.findall(r"^([a-z-]+):\s*(.+)$", match[1], re.M))
             if fields.get("name") != p.parent.name or not fields.get("description"):
                 errors.append("Invalid skill metadata: " + str(p.relative_to(root)))
+            if p.parent.name in manifest["explicit_only_skills"]:
+                if fields.get("disable-model-invocation") != "true":
+                    errors.append("Missing Claude explicit-only policy: " + str(p.relative_to(root)))
+                policy = p.parent / "agents/openai.yaml"
+                if not policy.exists() or "allow_implicit_invocation: false" not in policy.read_text():
+                    errors.append("Missing Codex explicit-only policy: " + str(p.relative_to(root)))
         if p.suffix == ".md":
             for target in re.findall(r"\[[^\]]*\]\(([^)]+)\)", text):
                 parsed = urlsplit(target.strip("<>"))
