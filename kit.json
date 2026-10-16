@@ -1,0 +1,29 @@
+{
+  "name": "clickup-agent-kit",
+  "status": "initial-public-version",
+  "schema_version": 2,
+  "skills": [
+    "codebase-design",
+    "domain-modeling",
+    "techlead-analyse-clickup",
+    "techlead-clickup-change-impact",
+    "techlead-clickup-collect",
+    "techlead-clickup-feasibility",
+    "techlead-clickup-handoff",
+    "techlead-clickup-publish",
+    "techlead-clickup-rebrief",
+    "to-issues",
+    "to-prd"
+  ],
+  "installer_runtimes": [
+    "codex",
+    "claude-code"
+  ],
+  "explicit_only_skills": [
+    "to-prd",
+    "to-issues"
+  ],
+  "original_contributions_license": "MIT",
+  "license": "MIT",
+  "distribution_status": "11 cleared skills; Karpathy adaptation excluded"
+}

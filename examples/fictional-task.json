@@ -1,0 +1,18 @@
+{
+  "fixture": true,
+  "task_id": "DEMO-001",
+  "title": "Show available board games at a volunteer lending desk",
+  "source": "fictional local export",
+  "description": "A desk volunteer records loans on paper. Visitors need a list of games that can be borrowed now. The requested first version shows game title and available copy count. Only desk volunteers may change loan records. Visitor reservations and online payments are explicitly out of scope.",
+  "comments": [
+    {"author_role": "desk coordinator", "text": "Availability means total owned copies minus active loans. A returned loan stops reducing availability."},
+    {"author_role": "product owner", "text": "How lost copies affect total owned copies is still undecided. Do not assume a lost-item rule."}
+  ],
+  "sample_inventory": [
+    {"game_code": "GAME-A", "title": "Sample Garden", "owned_copies": 3, "active_loans": 1},
+    {"game_code": "GAME-B", "title": "Sample Harbor", "owned_copies": 1, "active_loans": 1}
+  ],
+  "supplied_inputs": ["Fictional task wording", "Two fictional comments", "Two-row inventory sample"],
+  "not_supplied": ["Production system or API contract", "Approved UI design", "Lost-item rule", "Hours per person-day", "Rate and currency"],
+  "read_status": "complete for this fixture only"
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Lead ClickUp Analysis"
+  short_description: "Route local collection, rebrief and ClickUp delivery stages"
+  default_prompt: "Use $techlead-analyse-clickup to collect evidence locally, explain the client goal and scope, and select only the needed sub-skills. Reuse compatible existing planning skills; publish to ClickUp only within the authorized scope."
