@@ -1,61 +1,54 @@
-# ติดตั้งด้วย skills CLI
+# ติดตั้ง clickup-agent-kit
 
-ต้องมี Node.js 22.20+ และ `npx` สำหรับ skills CLI 1.7.2 ที่ใช้ทดสอบ รันในโฟลเดอร์โปรเจกต์ที่ต้องการใช้ kit:
+ต้องมี Node.js 22.20+ และ `npx` สำหรับ skills CLI วิธีนี้ใช้กับ Codex และ Claude Code โดยเลือกติดตั้งให้ runtime เดียวหรือทั้งคู่ได้
+
+## ติดตั้งในโปรเจกต์
+
+จากโฟลเดอร์โปรเจกต์ รัน:
 
 ```sh
 npx skills add fake-or-dead/clickup-agent-kit --skill '*' --agent codex claude-code
 ```
 
-เลือก **Project** และ **Symlink** หาก CLI ถาม จากนั้นตรวจ summary แล้ว confirm จะได้ทั้ง 11 skills สำหรับ Codex และ Claude Code พร้อม references, templates และ license notices `--skill '*'` สำคัญเพราะ skills เชื่อมไฟล์ข้าม folder จึงควรติดตั้งทั้งชุด
+เลือก **Project** และ **Symlink** หาก CLI ถาม ตรวจ destination และรายการ skills ก่อนยืนยัน `--skill '*'` ติดตั้งทั้ง 11 folders พร้อม references, templates และ notices ที่เชื่อมกันด้วย relative links
 
-## เลือก agent หรือ scope
+CLI สามารถแทนที่ skills ชื่อเดิมได้ ตรวจชื่อทั่วไปอย่าง `to-prd` ก่อนยืนยัน ถ้าต้องการ preview ที่ไม่เขียนไฟล์และปฏิเสธชื่อชน ใช้ Python installer ด้านล่าง
 
-| ต้องการ | เปลี่ยนคำสั่งอย่างไร |
+## เลือก runtime, scope และวิธี copy
+
+| ต้องการ | ตัวเลือก |
 | --- | --- |
-| Codex อย่างเดียว | เปลี่ยน agent list เป็น `--agent codex` |
-| Claude Code อย่างเดียว | เปลี่ยนเป็น `--agent claude-code` |
+| Codex อย่างเดียว | ใช้ `--agent codex` |
+| Claude Code อย่างเดียว | ใช้ `--agent claude-code` |
 | ใช้ทุกโปรเจกต์ของผู้ใช้ | เติม `--global` หรือ `-g` |
 | ใช้ copies แทน symlinks | เติม `--copy` |
 | ดูรายการก่อนติดตั้ง | ใช้ `npx skills add fake-or-dead/clickup-agent-kit --list` |
-| ติดตั้งแบบไม่ถาม confirmation | เติม `--yes` หรือ `-y` หลังคำสั่ง `add` เมื่อเลือก agent/scope แล้ว |
+| ไม่แสดง confirmation prompts | เติม `--yes` หรือ `-y` เมื่อเลือก runtime และ scope แล้ว |
 
-Project ติดตั้ง Codex ใน `.agents/skills` และ Claude Code ใน `.claude/skills` Symlink mode ใช้สำเนากลางใน `.agents/skills` ส่วน global ใช้ user skill locations ตาม CLI/runtime อย่าลบสำเนากลางเมื่อยังใช้ symlinks
+Project scope ใช้ `.agents/skills` สำหรับ Codex และ `.claude/skills` สำหรับ Claude Code ใน Symlink mode มีสำเนากลางใน `.agents/skills` ให้เก็บสำเนากลางไว้ขณะยังใช้ symlinks ส่วน global scope ใช้ user skill locations ตาม CLI และ runtime
 
-CLI มาตรฐานสามารถแทนที่ skills ชื่อเดิมได้ ตรวจ summary ก่อน confirm โดยเฉพาะ generic names อย่าง `to-prd` ถ้าต้องการ preview และ refusal เมื่อชื่อชน ให้ใช้ fallback ด้านล่าง
+`to-prd` และ `to-issues` เป็น explicit-only skills Metadata สำหรับทั้งสอง runtimes อยู่ใน source แล้ว จึงไม่ต้องแปลงไฟล์หลังติดตั้ง
 
-`to-prd` และ `to-issues` มี Claude `disable-model-invocation: true` ใน `SKILL.md` และ Codex `allow_implicit_invocation: false` ใน `agents/openai.yaml` อยู่แล้ว CLI มาตรฐาน copy metadata เหล่านี้ได้โดยไม่ต้องรัน adapter เพิ่ม
+## เริ่มใช้งาน
 
-## ตรวจว่าติดตั้งแล้ว
+เปิด runtime ในโปรเจกต์ที่ติดตั้ง ตรวจ catalog ด้วย `/skills` แล้วลอง [prompt แรกใน README](../README.md) สำหรับ Codex ใช้ `$techlead-analyse-clickup` สำหรับ Claude Code ใช้ `/techlead-analyse-clickup`
 
-เปิด Codex/Claude Code ในโปรเจกต์ที่ติดตั้ง ใช้ `/skills` แล้วตรวจชื่อทั้ง 11 ตัวตาม catalog ใน README จากนั้นลอง offline prompt ใน Quick start การทดสอบ CLI ยืนยันไฟล์, relative links, notices และ Codex discovery ไม่ใช่การรับรอง model behavior หรือ live ClickUp integration
+CLI ติดตั้งเฉพาะ skill folders หากต้องการใช้ fixture files ใน `examples/` ให้ clone หรือ download repo ตาม [offline exercise](../examples/getting-started.md) ส่วน inline prompt ใน README ใช้ได้โดยไม่ต้องมี fixture files
 
-skills CLI ติดตั้งเฉพาะ skill folders ไม่ได้ copy repository-level `examples/`, docs หรือ tests มายังโปรเจกต์ หากต้องการใช้ fixture files ให้ clone repo ตาม [offline example](../examples/getting-started.md) หรือใช้ inline prompt ใน README
+อ่าน [runtime support](runtime-support.md) สำหรับขอบเขต compatibility และ [connector prerequisites](dependencies.md) ก่อนใช้ข้อมูลจริง การติดตั้ง skills ไม่ตั้งค่า ClickUp, credentials หรือ workspace access
 
-## เชื่อม ClickUp แยกต่างหาก
+## ใช้ Python installer แทน CLI
 
-ติดตั้ง skills อย่างเดียวไม่ตั้งค่า MCP, credentials หรือ workspace access ถ้าจะอ่านข้อมูลจริง ต้องมี ClickUp connector ที่เข้าถึง scope นั้นและผ่าน authentication ของผู้ใช้ อ่าน [ClickUp setup สำหรับ Claude Code](claude-code.md) หรือ [capabilities ที่ต้องมี](dependencies.md) สำหรับ runtime อื่น การตรวจ task ไม่อนุญาตให้แก้ status หรือ publish โดยอัตโนมัติ
-
-## Fallback และ maintainer checks
-
-สำหรับผู้ที่ไม่ใช้ Node/skills CLI ให้ clone repo แล้วใช้ Python 3.10+ จาก root ของ clone คำสั่งนี้ preview ก่อน:
+ต้องมี Python 3.10+ และ local copy ของ repo จาก root ของ repo ให้ preview ไปยังโปรเจกต์ที่เลือก:
 
 ```sh
 python3 scripts/install.py --runtime codex --destination ../my-project/.agents/skills
 ```
 
-เติม `--apply` เพื่อ copy เปลี่ยนเป็น `--runtime claude-code` และ destination `../my-project/.claude/skills` สำหรับ Claude Code ชื่อ project เป็นตัวอย่าง เลือก path จริงเอง Fallback ปฏิเสธทุกชื่อที่ชนก่อน copy และไม่แก้ authentication configuration
+เปลี่ยน `../my-project` เป็น path ของคุณ ตรวจ preview แล้วเติม `--apply` เพื่อ copy สำหรับ Claude Code ใช้ `--runtime claude-code` กับ destination `../my-project/.claude/skills`
 
-Maintainers ตรวจ package จาก root ของ clone ได้ด้วย:
+Installer นี้ปฏิเสธทุกชื่อที่ชนก่อน copy และเก็บ unrelated skills ไว้ ไม่มีขั้นตอน authenticate หรือแก้ account configuration
 
-```sh
-python3 scripts/validate.py
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
-```
+## เอกสารอ้างอิง
 
-## แหล่งอ้างอิงและขอบเขตทดสอบ
-
-วิธีและ flags อ้าง [official Vercel skills CLI](https://github.com/vercel-labs/skills#install-a-skill) และ [CLI documentation](https://skills.sh/docs/cli) ตำแหน่ง/runtime policies อ้าง [official Codex skills documentation](https://learn.chatgpt.com/docs/build-skills) และ [official Claude skills documentation](https://code.claude.com/docs/en/skills)
-
-ทดสอบ skills CLI 1.7.2 ทั้ง remote discovery, project symlink และ project copy ให้ Codex/Claude Code ใน temporary directories พร้อมตรวจ supporting files และ relative links ทุกไฟล์ โดยปิด telemetry และแยก npm cache ไม่ติดตั้ง global หรือแก้ auth ของผู้ใช้ Global option อ้างเอกสารและไม่ได้รันทับ user home
-
-Repo นี้เป็น standalone skill collection ไม่มี Claude marketplace manifest กลไก [Claude plugins/marketplaces](https://code.claude.com/docs/en/plugins) รองรับ plugin packages อีกแบบหนึ่ง จึงไม่เพิ่ม marketplace/namespace เพื่อแทนการติดตั้ง skill folders ที่ทดสอบได้อยู่แล้ว
+ดู flags และ locations เพิ่มใน [skills CLI documentation](https://skills.sh/docs/cli), [Vercel skills CLI](https://github.com/vercel-labs/skills#install-a-skill), [Codex skills](https://learn.chatgpt.com/docs/build-skills) และ [Claude Code skills](https://code.claude.com/docs/en/skills)

@@ -112,4 +112,4 @@ Prompt นี้เป็นตัวอย่าง authorization ของ ope
 
 ตัวอย่างทั้งหมดเป็นการตรวจครั้งเดียว ไม่มี scheduler, background monitoring, webhook subscription หรือการแจ้งเตือนในอนาคต คำว่า “คอยดู” หรือ “แจ้งเมื่อเปลี่ยน” ต้องใช้ความสามารถ scheduling/event ที่ตั้งค่าและได้รับอนุญาตแยก ตัว kit ไม่สร้างสิ่งเหล่านั้น และไม่รับรองว่า connector ทุก runtime รองรับ mentions/history/attachments ครบ
 
-ดู [connector prerequisites](dependencies.md) และ [Claude setup/verification](claude-code.md) ไม่มี live ClickUp request ถูกใช้ระหว่างทดสอบตัวอย่างเหล่านี้
+ดู [connector prerequisites](dependencies.md) และ [Claude connector setup](claude-code.md) ก่อนใช้ prompts กับข้อมูลจริง

@@ -1,35 +1,33 @@
-# ติดตั้งใน Claude Code
+# ใช้ clickup-agent-kit ใน Claude Code
 
-Instructions นี้อ้าง [official Skills documentation](https://code.claude.com/docs/en/skills) ตำแหน่ง project คือ `.claude/skills/<name>/SKILL.md` ส่วน personal คือ `~/.claude/skills/<name>/SKILL.md` ให้เลือก scope และตรวจชื่อที่ชนก่อนใช้
+ติดตั้ง skills ก่อน แล้วเชื่อม ClickUp เมื่อจะใช้ข้อมูลจริง การติดตั้ง skills และการตั้งค่า MCP เป็นคนละขั้นตอน
 
 ## ติดตั้ง skills
 
-ใช้ [standard skills CLI](installation.md) จากโฟลเดอร์โปรเจกต์:
+จากโฟลเดอร์โปรเจกต์ รัน:
 
 ```sh
 npx skills add fake-or-dead/clickup-agent-kit --skill '*' --agent claude-code
 ```
 
-เลือก Project หาก CLI ถาม หรือเติม `--global` สำหรับ personal use ทั้ง 11 skills ต้องอยู่ด้วยกันเพื่อให้ relative links ครบ ส่วน explicit-only metadata ของ `to-prd`/`to-issues` อยู่ใน source แล้ว ไม่ต้องรัน adapter เพิ่ม ดู agent/scope/copy options และ fallback ใน installation guide
+เลือก **Project** หาก CLI ถาม หรือเติม `--global` เพื่อใช้ทุกโปรเจกต์ของผู้ใช้ ตรวจชื่อที่ชนก่อนยืนยัน เก็บทั้ง 11 skills ไว้ด้วยกันเพื่อให้ relative links ครบ ดู [installation options](installation.md) สำหรับ copy mode และ Python fallback
 
-เปิด Claude Code ในโปรเจกต์ ใช้ `/skills` ตรวจ catalog แล้วลอง offline prompt ใน README ก่อน การทดสอบ installer ยืนยันไฟล์และ policies ที่ติดตั้ง ไม่ใช่ runtime-loading หรือ model-behavior certification
+เปิด Claude Code ในโปรเจกต์ ตรวจ catalog ด้วย `/skills` แล้วลอง `/techlead-analyse-clickup` กับ [fictional prompt ใน README](../README.md) Native loading และ invocation ใน Claude Code ยังไม่ยืนยัน ดู [runtime support](runtime-support.md)
 
-## ClickUp connector prerequisites
+## เชื่อม ClickUp
 
-ต้องมี Claude Code ที่ใช้งานได้, ClickUp account/workspace access ที่เหมาะกับ tasks ที่เลือก และสิทธิ์จากองค์กรเมื่อจำเป็น Official ClickUp MCP ใช้ [endpoint และ OAuth ตามเอกสาร ClickUp](https://developer.clickup.com/docs/connect-an-ai-assistant-to-clickups-mcp-server) ไม่ใส่ token ใน kit
+ต้องมี Claude Code ที่ใช้งานได้ บัญชี ClickUp ที่เข้าถึง tasks ที่เลือก และสิทธิ์ใช้งาน connector ตามนโยบายขององค์กร [Official ClickUp MCP](https://developer.clickup.com/docs/connect-an-ai-assistant-to-clickups-mcp-server) ใช้ OAuth โดยไม่ต้องใส่ token ใน kit
 
-คำสั่งต่อไปนี้เป็น setup ที่ผู้ใช้เลือกทำภายหลัง ไม่ได้ถูกรันระหว่างเตรียม kit ตรวจ `claude mcp list` ก่อนเพื่อหลีกเลี่ยง server name ที่ชน แล้วเลือกเพียง scope เดียว:
+ตรวจ `claude mcp list` เพื่อหลีกเลี่ยง server name ที่ชน จากโฟลเดอร์โปรเจกต์ เพิ่ม connector ที่ผูกกับโปรเจกต์ปัจจุบัน:
 
 ```sh
 claude mcp add --transport http --scope local clickup https://mcp.clickup.com/mcp
 ```
 
-`local` ของ MCP ผูกกับ project ปัจจุบันแต่เก็บ config ใน user account ต่างจาก project-local skill files ถ้าต้องการ connector ทุก project ให้เปลี่ยนเป็น `--scope user` ส่วน `--scope project` สร้าง/แก้ `.mcp.json` ที่อาจแชร์กับทีมได้ อ่าน [official MCP scopes/authentication](https://code.claude.com/docs/en/mcp) ก่อนเลือก
+`local` ของ MCP เก็บ configuration ใน user account และผูกกับโปรเจกต์ปัจจุบัน ต่างจาก skill files ใน `.claude/skills` หากต้องการใช้ connector ทุกโปรเจกต์ เลือก `--scope user` ส่วน `--scope project` เขียน `.mcp.json` ที่อาจแชร์กับทีมได้ เลือก scope เดียวตามที่ต้องการ อ่าน [MCP scopes และ authentication](https://code.claude.com/docs/en/mcp) เพิ่มเติมก่อนใช้ shared configuration
 
-ใช้ `/mcp` เพื่อ authenticate ผ่าน OAuth ตรวจ server/tools และลองอ่าน task ทดสอบที่ผู้ใช้อนุญาตอย่างเดียว บันทึก task identity, read boundary และ capability ที่ขาด ไม่สร้างหรือแก้ task เพื่อพิสูจน์การเชื่อมต่อ การส่ง comment/แก้ description/สร้าง cards ต้องเป็นคำขอและ authorization แยกที่ชัดเจน
+ใช้ `/mcp` เพื่อ authenticate ผ่าน OAuth แล้วตรวจ server และ tools ที่มี ลองอ่าน task ที่คุณอนุญาตให้เข้าถึงก่อน พร้อมตรวจว่า description, comments และ sources ที่เกี่ยวข้องอ่านได้ครบเพียงใด
 
-## ขอบเขตที่ทดสอบแล้ว
+การส่ง comment แก้ description หรือสร้าง cards ต้องมีคำขอที่ระบุ content, operation และ destination พร้อม read-back capability การอ่าน task ไม่ได้อนุญาตให้แก้ status หรือ fields อื่นเอง ดู [capability boundaries](dependencies.md)
 
-ทดสอบ standard skills CLI ใน temporary project directories ทั้ง symlink/copy modes พร้อม byte preservation, notices, explicit invocation metadata และ cross-skill links แล้ว รวมถึง tests ของ fallback สำหรับ project/personal layouts, collisions และ no-write preview ไม่ได้ติดตั้งทับ skills จริงหรือเปลี่ยน auth config
-
-Claude CLI ที่มีบนเครื่องยังเริ่มทำงานไม่สำเร็จในการตรวจแบบ isolated จึงยังไม่ยืนยัน runtime loading, slash-command behavior, model behavior หรือ live ClickUp integration Instructions ตรงกับเอกสารปัจจุบัน แต่ผลทดสอบไฟล์ไม่ใช่ compatibility certification ดู [runtime support](runtime-support.md)
+ตำแหน่ง skills และ invocation อ้าง [official Claude Code skills documentation](https://code.claude.com/docs/en/skills)

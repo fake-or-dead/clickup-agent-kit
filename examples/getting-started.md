@@ -1,21 +1,37 @@
-# Make an offline rebrief and card
+# Make an offline rebrief and developer card
 
-This example concerns a fictional volunteer lending desk. It contains no live ClickUp URLs, user IDs, workspace IDs or customer data. `DEMO-001` is a fixture identifier, not a valid ClickUp task. All people are role labels.
+Use a fictional board-game lending desk to practice turning requirements into a rebrief and a self-contained card. The exercise needs no ClickUp connector. `DEMO-001` is a fixture identifier, and all people are role labels.
 
-The standard CLI installs skill folders, not these repository-level fixtures. For this file-based exercise, clone the repository and work from its root, or use the inline offline prompt in the README without cloning.
+## Get the fixture files
+
+The skills CLI installs skill folders without the repository-level examples. Clone or download this repository and work from its root. For a clone:
+
+```sh
+git clone https://github.com/fake-or-dead/clickup-agent-kit.git
+cd clickup-agent-kit
+npx skills add fake-or-dead/clickup-agent-kit --skill '*' --agent codex claude-code
+```
+
+Select the runtime and project scope you use. Open that runtime in the clone. See [installation options](../docs/installation.md) if skills with the same names already exist.
+
+## Create the local drafts
 
 1. Read [the fictional task](fictional-task.json) and [source receipt](source-receipt.md).
-2. In a runtime that has loaded the kit, use the following prompt. Choose a local output directory you can write to.
+2. Choose a writable local output directory. Replace `<output directory>` below, then use the prompt. For Claude Code replace `$techlead-analyse-clickup` with `/techlead-analyse-clickup`.
 
 ```text
 Use $techlead-analyse-clickup. Work offline using examples/fictional-task.json
 and examples/source-receipt.md only. Treat DEMO-001 as fictional.
 Prepare a concise English rebrief and one self-contained developer card in
-the local directory I choose. Do not connect to ClickUp, browse, publish,
-send messages, implement code or change account configuration.
+<output directory>. Do not connect to ClickUp, browse, publish, send messages,
+implement code or change account configuration.
 Hours per person-day, currency and rates have not been supplied.
 ```
 
-3. Compare the result with [the illustrative rebrief](expected-rebrief.md) and [card](expected-card.md). Wording can differ. Check that the result retains the pending lost-item rule, labels the proposed UI, limits scope to local evidence and avoids numeric cost/effort conversion.
+3. Compare the drafts with the [illustrative rebrief](expected-rebrief.md) and [developer card](expected-card.md).
 
-The expected files are hand-prepared examples, not a recorded model evaluation. The installer and validator do not execute a model or call ClickUp. You can inspect these files without installing anything.
+## Check the result
+
+The sample availability is 2 for `GAME-A` and 0 for `GAME-B`. The lost-item rule stays unknown, the proposed UI stays a proposal, and reservations and payments stay outside scope. The drafts must state that only fixture evidence was read and avoid numeric cost conversion without rates and units.
+
+The expected files are illustrative examples rather than recorded model outputs. Wording can differ. You can inspect all fixtures without installing anything, or try the [inline README prompt](../README.md) without fixture files.
